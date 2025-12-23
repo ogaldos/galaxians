@@ -4,30 +4,18 @@ from bullet import Bullet
 from utils import make_transparent
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, color):
+    def __init__(self, x, y, image_path, fallback_color=(255, 0, 0), size=(40, 40)):
         super().__init__()
         try:
             # Load image
-            raw_image = pygame.image.load("assets/enemy.png")
+            raw_image = pygame.image.load(image_path)
             # Make transparent
             self.image = make_transparent(raw_image)
             # Scale
-            self.image = pygame.transform.scale(self.image, (30, 30))
-            
-            # Tinting logic
-            # Create a mask to ensure we only tint the sprite, not the transparent background
-            # Note: make_transparent already set alpha to 0 for background
-            
-            # Create a solid color surface
-            color_surface = pygame.Surface(self.image.get_size()).convert_alpha()
-            color_surface.fill(color)
-            
-            # Blit the color surface onto the image using MULT blend mode
-            self.image.blit(color_surface, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
-            
+            self.image = pygame.transform.smoothscale(self.image, size)
         except FileNotFoundError:
-            self.image = pygame.Surface((30, 30))
-            self.image.fill(color)
+            self.image = pygame.Surface(size)
+            self.image.fill(fallback_color)
             
         self.rect = self.image.get_rect()
         self.rect.x = x

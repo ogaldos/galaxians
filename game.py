@@ -26,15 +26,27 @@ class Game:
         start_x = 50
         start_y = 50
         x_spacing = 50
-        y_spacing = 40
+        y_spacing = 50
         
-        colors = [(255, 0, 0), (255, 165, 0), (0, 0, 255), (255, 0, 255)]
+        enemy_assets = [
+            "assets/enemy_01.png",
+            "assets/enemy_02.png",
+            "assets/enemy_03.png",
+            "assets/enemy_04.png",
+        ]
+        fallback_colors = [(255, 0, 0), (255, 165, 0), (0, 0, 255), (255, 0, 255)]
         
         for row in range(rows):
             for col in range(cols):
                 x = start_x + col * x_spacing
                 y = start_y + row * y_spacing
-                enemy = Enemy(x, y, colors[row % len(colors)])
+                asset_index = row % len(enemy_assets)
+                enemy = Enemy(
+                    x,
+                    y,
+                    enemy_assets[asset_index],
+                    fallback_color=fallback_colors[asset_index],
+                )
                 self.enemies.add(enemy)
                 self.all_sprites.add(enemy)
 
